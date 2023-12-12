@@ -10,6 +10,7 @@ import { goMoviesScraper } from '@/providers/sources/gomovies/index';
 import { kissAsianScraper } from '@/providers/sources/kissasian/index';
 import { remotestreamScraper } from '@/providers/sources/remotestream';
 import { superStreamScraper } from '@/providers/sources/superstream/index';
+import { vidsrcScraper } from '@/providers/sources/vidsrc/index';
 import { zoechipScraper } from '@/providers/sources/zoechip';
 
 import { showBoxScraper } from './sources/showbox';
@@ -24,6 +25,7 @@ export function gatherAllSources(): Array<Sourcerer> {
     goMoviesScraper,
     zoechipScraper,
     showBoxScraper,
+    vidsrcScraper,
   ];
 }
 
