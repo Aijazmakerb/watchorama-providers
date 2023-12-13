@@ -6,8 +6,13 @@ export const vidsrcBase = 'https://vidsrc.to';
 export interface StreamRes {
   status: number;
   result: {
-    sources: any[];
-    tracks: any[];
+    sources: {
+      file: string;
+    }[];
+    tracks: {
+      file: string;
+      kind: string;
+    }[];
   };
 }
 
