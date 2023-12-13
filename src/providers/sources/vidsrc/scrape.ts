@@ -2,7 +2,7 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-bitwise */
 import { load } from 'cheerio';
-import { decode } from 'html-entities';
+import { decode, encode } from 'html-entities';
 
 import { MovieMedia, ShowMedia } from '@/main/media';
 import { vidsrcBase } from '@/providers/sources/vidsrc/common';

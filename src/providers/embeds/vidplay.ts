@@ -6,12 +6,10 @@ import { flags } from '@/main/targets';
 import { makeEmbed } from '@/providers/base';
 
 interface StreamRes {
-  data: {
-    status: number;
-    result: {
-      sources: any[];
-      tracks: any[];
-    };
+  status: number;
+  result: {
+    sources: any[];
+    tracks: any[];
   };
 }
 
@@ -74,7 +72,7 @@ export const vidplayScraper = makeEmbed({
     const data = await getFutoken(key, ctx.url);
 
     const response = await ctx.proxiedFetcher<StreamRes>(
-      `https://vidplay.site/mediainfo/${data}?${url.split('?')[1]}&autostart=true`,
+      `https://vidplay.site/mediainfo/${data}?${ctx.url.split('?')[1]}&autostart=true`,
       {
         headers: {
           Referer: ctx.url,
@@ -82,7 +80,7 @@ export const vidplayScraper = makeEmbed({
       },
     );
 
-    const result = response.data.result;
+    const result = response.result;
 
     if (!result && typeof result !== 'object') {
       throw new Error('video source not found');
