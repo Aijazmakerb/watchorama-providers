@@ -16,6 +16,9 @@ export const vidplayScraper = makeEmbed({
         headers: {
           Referer: ctx.url,
         },
+        query: {
+          v: Date.now().toString(),
+        },
       },
     );
 
