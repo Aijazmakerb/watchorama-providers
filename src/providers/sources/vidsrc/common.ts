@@ -3,20 +3,7 @@ import { decode } from 'html-entities';
 
 export const vidsrcBase = 'https://vidsrc.to';
 
-export interface StreamRes {
-  status: number;
-  result: {
-    sources: {
-      file: string;
-    }[];
-    tracks: {
-      file: string;
-      kind: string;
-    }[];
-  };
-}
-
-function keyPermutation(key: string, data: any): string {
+export function keyPermutation(key: string, data: any): string {
   const state: number[] = Array.from(Array(256).keys());
   let index1 = 0;
   for (let i = 0; i < 256; i += 1) {
@@ -41,29 +28,6 @@ function keyPermutation(key: string, data: any): string {
     }
   }
   return finalKey;
-}
-
-export async function encodeId(id: string): Promise<string> {
-  const response = await fetch('https://raw.githubusercontent.com/Claudemirovsky/worstsource-keys/keys/keys.json');
-  const [key1, key2] = await response.json();
-  const decodedId = keyPermutation(key1, id);
-  const encodedResult = keyPermutation(key2, decodedId);
-  const encodedBase64 = btoa(encodedResult);
-  return encodedBase64.replace('/', '_');
-}
-
-export async function getFutoken(key: string, url: string): Promise<string> {
-  const response = await fetch('https://vidplay.site/futoken', { headers: { Referer: url } });
-  const responseText = await response.text();
-  const match = responseText.match(/var\s+k\s*=\s*'([^']+)'/);
-  if (!match || match.length < 2 || match[1] == null) {
-    throw new Error('Failed to extract fuKey from the response');
-  }
-  const fuKey = match[1];
-  const fuToken = `${fuKey},${Array.from({ length: key.length }, (_, i) =>
-    (fuKey.charCodeAt(i % fuKey.length) + key.charCodeAt(i)).toString(),
-  ).join(',')}`;
-  return fuToken;
 }
 
 function adecode(buffer: Buffer): Buffer {

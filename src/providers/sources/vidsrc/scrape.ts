@@ -1,11 +1,10 @@
 import { load } from 'cheerio';
 
 import { MovieMedia, ShowMedia } from '@/main/media';
-import { Caption, getCaptionTypeFromUrl, labelToLanguageCode } from '@/providers/captions';
-import { decryptSourceUrl, encodeId, vidsrcBase } from '@/providers/sources/vidsrc/common';
+import { decryptSourceUrl, vidsrcBase } from '@/providers/sources/vidsrc/common';
 import { ScrapeContext } from '@/utils/context';
 
-interface FetchResponse {
+interface SourcesResponse {
   result: [
     {
       id: string;
@@ -14,7 +13,7 @@ interface FetchResponse {
   ];
 }
 
-interface secondResponse {
+interface FetchResponse {
   status: number;
   result: {
     url: string;
@@ -22,7 +21,7 @@ interface secondResponse {
 }
 
 export async function getVidsrcSourceDetails(ctx: ScrapeContext, sourcedId: string) {
-  const data = await ctx.proxiedFetcher<secondResponse>(`/ajax/embed/source/${sourcedId}`, {
+  const data = await ctx.fetcher<FetchResponse>(`/ajax/embed/source/${sourcedId}`, {
     baseUrl: vidsrcBase,
   });
 
@@ -31,7 +30,7 @@ export async function getVidsrcSourceDetails(ctx: ScrapeContext, sourcedId: stri
 }
 
 export async function getVidsrcMovieSourcesId(ctx: ScrapeContext, media: MovieMedia) {
-  const data = await ctx.proxiedFetcher<string>(`/embed/movie/${media.tmdbId}`, {
+  const data = await ctx.fetcher<string>(`/embed/movie/${media.tmdbId}`, {
     baseUrl: vidsrcBase,
   });
 
@@ -42,12 +41,9 @@ export async function getVidsrcMovieSourcesId(ctx: ScrapeContext, media: MovieMe
 }
 
 export async function getVidsrcShowSourcesId(ctx: ScrapeContext, media: ShowMedia) {
-  const data = await ctx.proxiedFetcher<string>(
-    `/embed/tv/${media.tmdbId}/${media.season.number}/${media.episode.number}`,
-    {
-      baseUrl: vidsrcBase,
-    },
-  );
+  const data = await ctx.fetcher<string>(`/embed/tv/${media.tmdbId}/${media.season.number}/${media.episode.number}`, {
+    baseUrl: vidsrcBase,
+  });
 
   const doc = load(data);
   const sourcesCode = doc('a[data-id]').attr('data-id');
@@ -56,7 +52,7 @@ export async function getVidsrcShowSourcesId(ctx: ScrapeContext, media: ShowMedi
 }
 
 export async function getVidsrcSources(ctx: ScrapeContext, sourcedId: string | undefined) {
-  const data = await ctx.proxiedFetcher<FetchResponse>(`/ajax/embed/episode/${sourcedId}/sources`, {
+  const data = await ctx.fetcher<SourcesResponse>(`/ajax/embed/episode/${sourcedId}/sources`, {
     baseUrl: vidsrcBase,
   });
 

@@ -1,8 +1,44 @@
 import { flags } from '@/main/targets';
 import { makeEmbed } from '@/providers/base';
-import { StreamRes, encodeId, getFutoken } from '@/providers/sources/vidsrc/common';
+import { keyPermutation } from '@/providers/sources/vidsrc/common';
 
 import { Caption, getCaptionTypeFromUrl, labelToLanguageCode } from '../captions';
+
+interface StreamRes {
+  status: number;
+  result: {
+    sources: {
+      file: string;
+    }[];
+    tracks: {
+      file: string;
+      kind: string;
+    }[];
+  };
+}
+
+async function getFutoken(key: string, url: string): Promise<string> {
+  const response = await fetch('https://vidplay.site/futoken', { headers: { Referer: url } });
+  const responseText = await response.text();
+  const match = responseText.match(/var\s+k\s*=\s*'([^']+)'/);
+  if (!match || match.length < 2 || match[1] == null) {
+    throw new Error('Failed to extract fuKey from the response');
+  }
+  const fuKey = match[1];
+  const fuToken = `${fuKey},${Array.from({ length: key.length }, (_, i) =>
+    (fuKey.charCodeAt(i % fuKey.length) + key.charCodeAt(i)).toString(),
+  ).join(',')}`;
+  return fuToken;
+}
+
+async function encodeId(id: string): Promise<string> {
+  const response = await fetch('https://raw.githubusercontent.com/Claudemirovsky/worstsource-keys/keys/keys.json');
+  const [key1, key2] = await response.json();
+  const decodedId = keyPermutation(key1, id);
+  const encodedResult = keyPermutation(key2, decodedId);
+  const encodedBase64 = btoa(encodedResult);
+  return encodedBase64.replace('/', '_');
+}
 
 export const vidplayScraper = makeEmbed({
   id: 'vidplay',
@@ -19,7 +55,7 @@ export const vidplayScraper = makeEmbed({
       subtitles = await subtitlesFetch.json();
     }
 
-    const response = await ctx.proxiedFetcher<StreamRes>(
+    const response = await ctx.fetcher<StreamRes>(
       `https://vidplay.site/mediainfo/${data}?${ctx.url.split('?')[1]}&autostart=true`,
       {
         headers: {
