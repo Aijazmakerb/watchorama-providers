@@ -11,7 +11,7 @@ export const vidplayScraper = makeEmbed({
     const data = await getFutoken(key, ctx.url);
 
     const response = await ctx.proxiedFetcher<StreamRes>(
-      `https://vidplay.site/mediainfo/${data}?${ctx.url.split('?')[1]}&autostart=true`,
+      `https://cors.moopa.live/https://vidplay.site/mediainfo/${data}?${ctx.url.split('?')[1]}&autostart=true`,
       {
         headers: {
           Referer: ctx.url,
