@@ -56,7 +56,7 @@ export const vidplayScraper = makeEmbed({
     }
 
     const response = await ctx.fetcher<StreamRes>(
-      `https://vidplay.site/mediainfo/${data}?${ctx.url.split('?')[1]}&autostart=true`,
+      `https://cors.moopa.live/https://vidplay.site/mediainfo/${data}?${ctx.url.split('?')[1]}&autostart=true`,
       {
         headers: {
           Referer: ctx.url,
