@@ -1,7 +1,7 @@
 /* eslint-disable no-bitwise */
 import { decode } from 'html-entities';
 
-export const vidsrcBase = 'https://cors.moopa.live/https://vidsrc.to';
+export const vidsrcBase = 'https://vidsrc.to';
 
 export interface StreamRes {
   status: number;

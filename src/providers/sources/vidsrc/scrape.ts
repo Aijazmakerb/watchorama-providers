@@ -1,7 +1,8 @@
 import { load } from 'cheerio';
 
 import { MovieMedia, ShowMedia } from '@/main/media';
-import { decryptSourceUrl, vidsrcBase } from '@/providers/sources/vidsrc/common';
+import { Caption, getCaptionTypeFromUrl, labelToLanguageCode } from '@/providers/captions';
+import { decryptSourceUrl, encodeId, vidsrcBase } from '@/providers/sources/vidsrc/common';
 import { ScrapeContext } from '@/utils/context';
 
 interface FetchResponse {
