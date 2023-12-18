@@ -9,7 +9,7 @@ import { primewireApiKey, primewireBase } from './common';
 import { getLinks } from './crypto';
 
 async function search(ctx: ScrapeContext, imdbId: string) {
-  const searchResult = await ctx.proxifiedFetcher<{
+  const searchResult = await ctx.proxiedFetcher<{
     id: string;
   }>('/api/v1/show/', {
     baseUrl: primewireBase,
