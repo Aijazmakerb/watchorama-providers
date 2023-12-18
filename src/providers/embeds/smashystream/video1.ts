@@ -14,7 +14,7 @@ export const smashyStreamFScraper = makeEmbed({
   name: 'SmashyStream (F)',
   rank: 400,
   async scrape(ctx) {
-    const res = await ctx.proxiedFetcher<FPlayerResponse>(`${helper}/${ctx.url}`);
+    const res = await ctx.fetcher<FPlayerResponse>(`${helper}/${ctx.url}`);
 
     const captions: Caption[] =
       res.subtitleUrls
