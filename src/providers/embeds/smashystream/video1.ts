@@ -7,16 +7,14 @@ type FPlayerResponse = {
   subtitleUrls: string;
 };
 
+const helper = 'https://watchorama-helper.vercel.app/helpPlayerF';
+
 export const smashyStreamFScraper = makeEmbed({
   id: 'smashystream-f',
   name: 'SmashyStream (F)',
   rank: 400,
   async scrape(ctx) {
-    const res = await ctx.proxiedFetcher<FPlayerResponse>(ctx.url, {
-      headers: {
-        Referer: ctx.url,
-      },
-    });
+    const res = await ctx.proxiedFetcher<FPlayerResponse>(`${helper}/${ctx.url}`);
 
     const captions: Caption[] =
       res.subtitleUrls
