@@ -12,11 +12,13 @@ export const smashyStreamFScraper = makeEmbed({
   name: 'SmashyStream (F)',
   rank: 400,
   async scrape(ctx) {
-    const res = await ctx.proxiedFetcher<FPlayerResponse>(ctx.url, {
+    const response = await fetch(`https://simple-proxy.786aijazusmaan.workers.dev/?destination=${ctx.url}`, {
       headers: {
         Referer: ctx.url,
       },
     });
+
+    const res: FPlayerResponse = await response.json();
 
     const captions: Caption[] =
       res.subtitleUrls
