@@ -12,9 +12,9 @@ export const smashyStreamFScraper = makeEmbed({
   name: 'SmashyStream (F)',
   rank: 400,
   async scrape(ctx) {
-    const res = await ctx.proxiedFetcher<FPlayerResponse>(ctx.url, {
+    const res = await ctx.fetcher<FPlayerResponse>(ctx.url, {
       headers: {
-        Referer: decodeURIComponent(ctx.url),
+        Referer: ctx.url,
       },
     });
 
