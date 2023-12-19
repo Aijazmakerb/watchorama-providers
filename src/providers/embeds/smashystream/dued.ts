@@ -12,7 +12,7 @@ type DPlayerSourcesResponse = {
 export const smashyStreamDScraper = makeEmbed({
   id: 'smashystream-d',
   name: 'SmashyStream (D)',
-  rank: 410,
+  rank: 71,
   async scrape(ctx) {
     const mainPageRes = await ctx.proxiedFetcher<string>(ctx.url, {
       headers: {
@@ -40,9 +40,9 @@ export const smashyStreamDScraper = makeEmbed({
         Referer: iframeUrl,
       },
     });
-    // Playlists in Hindi, English, Tamil and Telugu are available. We only get the english one.
-    const textFilePlaylist = textFileRes.find((x) => x.title === 'English')?.file;
-    if (!textFilePlaylist) throw new Error(`[${this.name}] failed to find an english playlist`);
+    // Playlists in Hindi, English, Tamil and Telugu are available. We only get the hindi one.
+    const textFilePlaylist = textFileRes.find((x) => x.title === 'Hindi')?.file;
+    if (!textFilePlaylist) throw new Error(`[${this.name}] failed to find an Hindi playlist`);
 
     const playlistRes = await ctx.proxiedFetcher<string>(
       `${mainUrl.origin}/playlist/${textFilePlaylist.slice(1)}.txt`,
