@@ -9,6 +9,11 @@ import { MovieScrapeContext, ShowScrapeContext } from '@/utils/context';
 const smashyStreamBase = 'https://embed.smashystream.com';
 const referer = 'https://smashystream.com/';
 
+type FPlayerResponse = {
+  sourceUrls: string[];
+  subtitleUrls: string;
+};
+
 const universalScraper = async (ctx: ShowScrapeContext | MovieScrapeContext): Promise<SourcererOutput> => {
   const mainPage = await ctx.proxiedFetcher<string>('/playere.php', {
     query: {
