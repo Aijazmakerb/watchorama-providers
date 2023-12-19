@@ -7,14 +7,14 @@ type FPlayerResponse = {
   subtitleUrls: string;
 };
 
-const helper = 'https://watchorama-helper.vercel.app/helpPlayerF';
+const helper = 'https://cors.moopa.live/https://watchorama-helper.vercel.app/helpPlayerF';
 
 export const smashyStreamFScraper = makeEmbed({
   id: 'smashystream-f',
   name: 'SmashyStream (F)',
   rank: 400,
   async scrape(ctx) {
-    const res = await ctx.fetcher<FPlayerResponse>(`${helper}/${ctx.url}`);
+    const res = await ctx.fetcher<FPlayerResponse>(`${helper}?url=${ctx.url}`);
 
     const captions: Caption[] =
       res.subtitleUrls
